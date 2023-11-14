@@ -1,10 +1,10 @@
 package christmas.service;
 
-import christmas.domain.Event;
-import christmas.domain.Order;
+import christmas.domain.event.Event;
+import christmas.domain.order.Order;
 
 public class EventService {
-    public Event getEventInfo(Order order, int date) {
+    public Event getEventInfo(Order order) {
         return null;
     }
 }

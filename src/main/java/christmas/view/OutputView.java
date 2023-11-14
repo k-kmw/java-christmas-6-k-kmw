@@ -1,14 +1,14 @@
 package christmas.view;
 
-import christmas.domain.Event;
-import christmas.domain.Order;
+import christmas.domain.event.Event;
+import christmas.domain.order.Order;
 
 public class OutputView {
     public void printMenu(Order order) {
         System.out.println("<주문 메뉴>");
     }
 
-    public void printBeforeDiscountTotalPrice(Order order) {
+    public void printTotalPriceBeforeDiscount(Order order) {
     }
 
     public void printBenefit(Event event) {
