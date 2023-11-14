@@ -8,4 +8,8 @@ public class InputView {
         String input = Console.readLine();
         return Integer.parseInt(input);
     }
+
+    public String readMenus() {
+        return null;
+    }
 }
