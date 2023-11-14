@@ -1,7 +1,8 @@
 package christmas.domain.order;
 
+import _core.exception.MyException;
+
 import static christmas.domain.order.Menu.*;
-import static christmas.domain.order.Menu.DRINK_3;
 
 public class OrderMenuItem {
 
@@ -35,7 +36,7 @@ public class OrderMenuItem {
             case "제로콜라" -> DRINK_1;
             case "레드와인" -> DRINK_2;
             case "샴페인" -> DRINK_3;
-            default -> throw new IllegalArgumentException("존재하지 않는 메뉴 입니다.");
+            default -> throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
         };
         return new OrderMenuItem(menuItem, quantity);
     }

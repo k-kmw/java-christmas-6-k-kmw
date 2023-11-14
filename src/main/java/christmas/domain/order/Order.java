@@ -1,5 +1,7 @@
 package christmas.domain.order;
 
+import _core.exception.MyException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +38,22 @@ public class Order {
         for (String orderItem : orderItems) {
             String[] menuAndCount = orderItem.split("-");
             if (menuAndCount.length != 2) {
-                throw new IllegalArgumentException("메뉴명-수량 형식으로 입력해야 합니다.");
+                throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
             }
-            String menuName = menuAndCount[0];
-            int quantity = Integer.parseInt(menuAndCount[1]);
-            OrderMenuItem orderMenuItem = OrderMenuItem.create(menuName, quantity);
-            orderMenuItems.add(orderMenuItem);
+            try {
+                String menuName = menuAndCount[0];
+                int quantity = Integer.parseInt(menuAndCount[1]);
+                checkDuplicateMenu(orderMenuItems, menuName);
+                OrderMenuItem orderMenuItem = OrderMenuItem.create(menuName, quantity);
+                orderMenuItems.add(orderMenuItem);
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException(MyException.INVALID_ORDER.getMessage());
+            }
         }
+    }
+
+    private void checkDuplicateMenu(List<OrderMenuItem> orderMenuItems, String menuName) {
+        if (orderMenuItems.stream().anyMatch(orderMenuItem -> orderMenuItem.getMenuItem().getName().equals(menuName)))
+            throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
     }
 }
