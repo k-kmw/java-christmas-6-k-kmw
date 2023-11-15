@@ -35,7 +35,7 @@ public class OrderTest {
         assertThat(order.getOrderDate()).isEqualTo(orderDate);
     }
 
-    @DisplayName("할인 적용 전 총 주문 금액이 옳바르게 계산되어야 한다.")
+    @DisplayName("할인 적용 전 총 주문 금액이 올바르게 계산되어야 한다.")
     @Test
     public void calculateTotalPriceBeforeDiscountTest() {
         // when
@@ -46,7 +46,7 @@ public class OrderTest {
         assertThat(totalPriceBeforeDiscount).isEqualTo(expected);
     }
 
-    @DisplayName("증정 이벤트 개수가 옳바르게 판단되어야 한다.")
+    @DisplayName("증정 이벤트 개수가 올바르게 판단되어야 한다.")
     @Test
     public void isGetGiftEventTest() {
         // when
