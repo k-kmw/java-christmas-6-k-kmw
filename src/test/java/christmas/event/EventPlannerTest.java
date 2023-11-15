@@ -1,6 +1,6 @@
 package christmas.event;
 
-import christmas.domain.event.DiscountPolicy;
+import christmas.domain.event.SimpleDiscountPolicy;
 import christmas.domain.event.Event;
 import christmas.domain.event.EventBadge;
 import christmas.domain.event.EventPlanner;
@@ -30,7 +30,7 @@ public class EventPlannerTest {
         menu = "티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1"; // 142,000원
         orderDate = 3;
         order = new Order(menu, orderDate);
-        eventPlanner = new EventPlanner(new DiscountPolicy());
+        eventPlanner = new EventPlanner(new SimpleDiscountPolicy());
     }
 
     @DisplayName("주문에 맞게 이벤트가 적절히 적용 되어야 한다.")
