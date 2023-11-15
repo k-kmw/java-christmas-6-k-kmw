@@ -29,8 +29,8 @@ public class Order {
         return orderMenuItems.stream().mapToInt(orderMenuItem -> orderMenuItem.getMenuItem().getPrice() * orderMenuItem.getQuantity()).sum();
     }
 
-    public boolean isGetGiftEvent() {
-        return calculateTotalPriceBeforeDiscount() >= 120000;
+    public int calculateGiftEventNum() {
+        return calculateTotalPriceBeforeDiscount() / 120000;
     }
 
     private void makeOrderMenuItems(String menus) {

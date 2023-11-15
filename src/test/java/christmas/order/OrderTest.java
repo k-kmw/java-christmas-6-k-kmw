@@ -18,7 +18,6 @@ public class OrderTest {
 
     @BeforeEach
     void setUp() {
-        //given
         menu = "티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1";
         orderDate = 3;
         order = new Order(menu, orderDate);
@@ -48,15 +47,15 @@ public class OrderTest {
         assertThat(totalPriceBeforeDiscount).isEqualTo(expected);
     }
 
-    @DisplayName("증정 이벤트 여부가 옳바르게 판단되어야 한다.")
+    @DisplayName("증정 이벤트 개수가 옳바르게 판단되어야 한다.")
     @Test
     public void isGetGiftEventTest() {
         // when
-        boolean getGiftEvent = order.isGetGiftEvent();
-        boolean expected = order.calculateTotalPriceBeforeDiscount() >= 120000;
+        int getGiftEventNum = order.calculateGiftEventNum();
+        int expected = order.calculateTotalPriceBeforeDiscount() / 120000;
 
         // then
-        assertThat(getGiftEvent).isEqualTo(expected);
+        assertThat(getGiftEventNum).isEqualTo(expected);
     }
 
     @DisplayName("메뉴판에 없는 메뉴를 입력하는 경우 예외가 발생해야 한다.")

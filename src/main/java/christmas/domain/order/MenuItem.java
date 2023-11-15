@@ -6,7 +6,7 @@ public class MenuItem {
     private final int price;
     private final Category category;
 
-    public MenuItem(String name, int price,  Category category) {
+    public MenuItem(String name, int price, Category category) {
         this.name = name;
         this.price = price;
         this.category = category;

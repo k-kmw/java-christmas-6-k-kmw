@@ -3,7 +3,7 @@ package christmas.domain.order;
 public class Menu {
 
     public static final MenuItem MUSHROOM_SOUP = new MenuItem("양송이수프", 6000, Category.APPETIZER);
-    public static final MenuItem  TAPAS = new MenuItem("타파스", 5500, Category.APPETIZER);
+    public static final MenuItem TAPAS = new MenuItem("타파스", 5500, Category.APPETIZER);
     public static final MenuItem CAESAR_SALAD = new MenuItem("시저샐러드", 8000, Category.APPETIZER);
 
     public static final MenuItem T_BONE_STEAK = new MenuItem("티본스테이크", 55000, Category.MAIN);

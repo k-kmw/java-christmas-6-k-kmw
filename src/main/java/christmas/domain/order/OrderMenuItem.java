@@ -6,20 +6,12 @@ import static christmas.domain.order.Menu.*;
 
 public class OrderMenuItem {
 
-    private MenuItem menuItem;
-    private int quantity;
+    private final MenuItem menuItem;
+    private final int quantity;
 
     public OrderMenuItem(MenuItem menuItem, int quantity) {
         this.menuItem = menuItem;
         this.quantity = quantity;
-    }
-
-    public MenuItem getMenuItem() {
-        return menuItem;
-    }
-
-    public int getQuantity() {
-        return quantity;
     }
 
     public static OrderMenuItem create(String menuName, int quantity) {
@@ -39,5 +31,13 @@ public class OrderMenuItem {
             default -> throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
         };
         return new OrderMenuItem(menuItem, quantity);
+    }
+
+    public MenuItem getMenuItem() {
+        return menuItem;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }

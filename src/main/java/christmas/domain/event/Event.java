@@ -2,18 +2,18 @@ package christmas.domain.event;
 
 public class Event {
 
-    private int christmasDiscount;
-    private int weekDayDiscount;
-    private int weekendDiscount;
-    private int starDiscount;
-    private int giftEvent;
+    private final int christmasDiscount;
+    private final int weekDayDiscount;
+    private final int weekendDiscount;
+    private final int starDiscount;
+    private final int giftEventBenefit;
 
-    public Event(int christmasDiscount, int weekDayDiscount, int weekendDiscount, int starDiscount, int giftEvent) {
+    public Event(int christmasDiscount, int weekDayDiscount, int weekendDiscount, int starDiscount, int giftEventBenefit) {
         this.christmasDiscount = christmasDiscount;
         this.weekDayDiscount = weekDayDiscount;
         this.weekendDiscount = weekendDiscount;
         this.starDiscount = starDiscount;
-        this.giftEvent = giftEvent;
+        this.giftEventBenefit = giftEventBenefit;
     }
 
     public int getChristmasDiscount() {
@@ -28,8 +28,8 @@ public class Event {
         return weekendDiscount;
     }
 
-    public int getGiftEvent() {
-        return giftEvent;
+    public int getGiftEventBenefit() {
+        return giftEventBenefit;
     }
 
     public int getStarDiscount() {
@@ -37,17 +37,11 @@ public class Event {
     }
 
     public int calculateTotalBenefit() {
-        return christmasDiscount + weekDayDiscount + weekendDiscount + starDiscount + giftEvent;
+        return christmasDiscount + weekDayDiscount + weekendDiscount + starDiscount + giftEventBenefit;
     }
 
     public EventBadge getEventBadge() {
         int totalBenefit = calculateTotalBenefit();
-        if (totalBenefit >= 20000) {
-            return EventBadge.SANTA;
-        }
-        else if (totalBenefit >= 10000) {
-            return EventBadge.TREE;
-        }
-        return EventBadge.STAR;
+        return EventBadge.create(totalBenefit);
     }
 }
