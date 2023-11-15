@@ -40,7 +40,7 @@ public class Order {
         String[] orderItems = menus.split(MENU_SEPARATOR);
         Arrays.stream(orderItems)
                 .map(orderItem -> orderItem.split(MENU_QUANTITY_SEPARATOR))
-                .map(menuAndQuantity -> OrderMenuItem.create(menuAndQuantity[0].strip(), Integer.parseInt(menuAndQuantity[1].strip())))
+                .map(menuAndQuantity -> OrderMenuItem.create(menuAndQuantity[0], Integer.parseInt(menuAndQuantity[1])))
                 .forEach(orderMenuItems::add);
         validateOrderMenuItems(orderMenuItems);
     }
