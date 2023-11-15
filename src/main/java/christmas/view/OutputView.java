@@ -11,7 +11,7 @@ import static christmas.domain.Constant.GIFT_EVENT_PRICE;
 
 public class OutputView {
 
-    private DecimalFormat df = new DecimalFormat("###,###");
+    private final DecimalFormat df = new DecimalFormat("###,###");
 
     public void printOrderStartMessage() {
         System.out.println("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.");
@@ -40,26 +40,39 @@ public class OutputView {
     }
 
     private void printEventList(Event event, DiscountType discountType) {
+        printGiftEventMenu(event.getGiftEventBenefit() / GIFT_EVENT_PRICE);
+        printBenefitList(event, discountType);
+    }
+
+    private static void printGiftEventMenu(int giftMenuNum) {
         System.out.println("\n<증정 메뉴>");
-        int giftMenuNum = event.getGiftEventBenefit() / GIFT_EVENT_PRICE;
         if (giftMenuNum == 0) {
             System.out.println("없음");
         } else {
             System.out.println("샴페인 " + giftMenuNum);
         }
+    }
+
+    private void printBenefitList(Event event, DiscountType discountType) {
         System.out.println("\n<혜택 내역>");
         int totalBenefit = event.calculateTotalBenefit();
         if(totalBenefit == 0) {
             System.out.println("없음");
         } else {
-            System.out.println("크리스마스 디데이 할인: " + df.format(-event.getChristmasDiscount()) + "원");
+            printBenefit("크리스마스 디데이 할인: ", event.getChristmasDiscount());
             if (discountType == DiscountType.WEEK) {
-                System.out.println("평일 할인: " + df.format(-event.getWeekDayDiscount()) + "원");
+                printBenefit("평일 할인: ", event.getWeekDayDiscount());
             } else {
-                System.out.println("주말 할인: " + df.format(-event.getWeekendDiscount()) + "원");
+                printBenefit("주말 할인: ", event.getWeekendDiscount());
             }
-            System.out.println("특별 할인: " + df.format(-event.getStarDiscount()) + "원");
-            System.out.println("증정 이벤트: " + df.format(-event.getGiftEventBenefit()) + "원");
+            printBenefit("특별 할인: ", event.getStarDiscount());
+            printBenefit("증정 이벤트: ", event.getGiftEventBenefit());
+        }
+    }
+
+    private void printBenefit(String benefitName, int discountAmount) {
+        if (discountAmount != 0) {
+            System.out.println(benefitName + df.format(-discountAmount) + "원");
         }
     }
 
