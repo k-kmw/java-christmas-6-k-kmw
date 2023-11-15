@@ -9,7 +9,7 @@ public class OrderMenuItem {
     private final MenuItem menuItem;
     private final int quantity;
 
-    public OrderMenuItem(MenuItem menuItem, int quantity) {
+    private OrderMenuItem(MenuItem menuItem, int quantity) {
         this.menuItem = menuItem;
         this.quantity = quantity;
     }
