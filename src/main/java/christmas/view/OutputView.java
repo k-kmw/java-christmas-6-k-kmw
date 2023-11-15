@@ -3,7 +3,6 @@ package christmas.view;
 import christmas.domain.event.DiscountType;
 import christmas.domain.event.Event;
 import christmas.domain.order.Order;
-import christmas.domain.order.OrderMenuItem;
 
 import java.text.DecimalFormat;
 
@@ -23,9 +22,7 @@ public class OutputView {
     
     public void printMenu(Order order) {
         System.out.println("\n<주문 메뉴>");
-        for (OrderMenuItem orderMenuItem : order.getOrderMenuItems()) {
-            System.out.println(orderMenuItem.getMenuItem().getName() + " " + orderMenuItem.getQuantity() + "개");
-        }
+        order.getOrderMenuItems().forEach(orderMenuItem -> System.out.println(orderMenuItem.getMenuItem().getName() + " " + orderMenuItem.getQuantity() + "개"));
     }
 
     public void printTotalPriceBeforeDiscount(Order order) {
@@ -48,26 +45,29 @@ public class OutputView {
         System.out.println("\n<증정 메뉴>");
         if (giftMenuNum == 0) {
             System.out.println("없음");
-        } else {
-            System.out.println("샴페인 " + giftMenuNum);
+            return;
         }
+        System.out.println("샴페인 " + giftMenuNum);
     }
 
     private void printBenefitList(Event event, DiscountType discountType) {
         System.out.println("\n<혜택 내역>");
-        int totalBenefit = event.calculateTotalBenefit();
-        if(totalBenefit == 0) {
+        if(event.calculateTotalBenefit() == 0) {
             System.out.println("없음");
-        } else {
-            printBenefit("크리스마스 디데이 할인: ", event.getChristmasDiscount());
-            if (discountType == DiscountType.WEEK) {
-                printBenefit("평일 할인: ", event.getWeekDayDiscount());
-            } else {
-                printBenefit("주말 할인: ", event.getWeekendDiscount());
-            }
-            printBenefit("특별 할인: ", event.getStarDiscount());
-            printBenefit("증정 이벤트: ", event.getGiftEventBenefit());
+            return;
         }
+        printBenefit("크리스마스 디데이 할인: ", event.getChristmasDiscount());
+        printDayDiscount(event, discountType);
+        printBenefit("특별 할인: ", event.getStarDiscount());
+        printBenefit("증정 이벤트: ", event.getGiftEventBenefit());
+    }
+
+    private void printDayDiscount(Event event, DiscountType discountType) {
+        if (discountType == DiscountType.WEEK) {
+            printBenefit("평일 할인: ", event.getWeekDayDiscount());
+            return;
+        }
+        printBenefit("주말 할인: ", event.getWeekendDiscount());
     }
 
     private void printBenefit(String benefitName, int discountAmount) {
