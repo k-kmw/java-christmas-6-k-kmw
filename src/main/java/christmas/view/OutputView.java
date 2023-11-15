@@ -44,7 +44,7 @@ public class OutputView {
         printBenefitList(event, discountType);
     }
 
-    private static void printGiftEventMenu(int giftMenuNum) {
+    private void printGiftEventMenu(int giftMenuNum) {
         System.out.println("\n<증정 메뉴>");
         if (giftMenuNum == 0) {
             System.out.println("없음");

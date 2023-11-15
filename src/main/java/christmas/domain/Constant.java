@@ -17,4 +17,10 @@ public final class Constant {
     public static int DAY_DISCOUNT_PRICE = 2023;
     public static int CHRISTMAS_DATE = 25;
     public static int STAR_DAY_DISCOUNT_PRICE = 1000;
+
+    // calendar
+    public static int DAYS_A_WEEK = 7;
+    public static int FRIDAY_REMAINDER = 1;
+    public static int SATURDAY_REMAINDER = 2;
+    public static int STAR_DAY_REMAINDER = 3;
 }

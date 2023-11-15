@@ -1,5 +1,7 @@
 package christmas.domain.event;
 
+import static christmas.domain.Constant.*;
+
 public enum EventBadge {
     NONE("없음", 0), STAR("별", 5000), TREE("트리", 10000), SANTA("산타", 20000);
 
@@ -13,11 +15,11 @@ public enum EventBadge {
 
     // 정적 생성 메서드
     public static EventBadge create(int totalBenefit) {
-        if (totalBenefit >= 20000) {
+        if (totalBenefit >= SANTA.basePrice) {
             return EventBadge.SANTA;
-        } else if (totalBenefit >= 10000) {
+        } else if (totalBenefit >= TREE.basePrice) {
             return EventBadge.TREE;
-        } else if (totalBenefit >= 5000) {
+        } else if (totalBenefit >= STAR.basePrice) {
             return EventBadge.STAR;
         }
         return EventBadge.NONE;
@@ -25,9 +27,5 @@ public enum EventBadge {
 
     public String getName() {
         return name;
-    }
-
-    public int getBasePrice() {
-        return basePrice;
     }
 }
