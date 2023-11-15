@@ -1,14 +1,13 @@
 package christmas.order;
 
-import christmas.domain.order.Menu;
 import christmas.domain.order.Order;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static christmas.domain.order.Menu.MENU_ITEMS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class OrderTest {
 
@@ -41,7 +40,7 @@ public class OrderTest {
     public void calculateTotalPriceBeforeDiscountTest() {
         // when
         int totalPriceBeforeDiscount = order.calculateTotalPriceBeforeDiscount();
-        int expected = Menu.T_BONE_STEAK.getPrice() + Menu.BBQ_LIBS.getPrice() + Menu.CHOCO_CAKE.getPrice() * 2 + Menu.ZERO_COKE.getPrice();
+        int expected = MENU_ITEMS.get("티본스테이크").getPrice() + MENU_ITEMS.get("바비큐립").getPrice() + MENU_ITEMS.get("초코케이크").getPrice() * 2 + MENU_ITEMS.get("제로콜라").getPrice();
 
         // then
         assertThat(totalPriceBeforeDiscount).isEqualTo(expected);
