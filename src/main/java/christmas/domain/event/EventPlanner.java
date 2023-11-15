@@ -3,6 +3,7 @@ package christmas.domain.event;
 import christmas.domain.order.Order;
 
 public class EventPlanner {
+
     private final DiscountPolicy discountPolicy;
 
     public EventPlanner(DiscountPolicy discountPolicy) {
@@ -10,6 +11,6 @@ public class EventPlanner {
     }
 
     public Event event(Order order) {
-        return discountPolicy.calculateDiscount(order);
+        return Event.create(order, discountPolicy);
     }
 }
