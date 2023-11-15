@@ -90,6 +90,8 @@ public class EventPlannerController {
             throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
         }
 
+
+        checkNoExistMenu(orderMenuItems);
         checkDuplicateMenu(orderMenuItems);
 
         for (String orderItem : orderMenuItems) {
@@ -97,9 +99,23 @@ public class EventPlannerController {
         }
     }
 
-    private void checkDuplicateMenu(String[] orderItems) {
-        int orderItemsCount = orderItems.length;
-        int noDuplicateMenuItemCount = Arrays.stream(orderItems).map(menuAndQuantity -> menuAndQuantity.split(MENU_QUANTITY_SEPARATOR))
+    private void checkNoExistMenu(String[] orderMenuItems) {
+        Set<String> menuNames = Menu.MENU_ITEMS.values().stream()
+                .map(MenuItem::getName)
+                .collect(Collectors.toSet());
+
+        for (String orderMenuItem : orderMenuItems) {
+            String menuName = orderMenuItem.split(MENU_QUANTITY_SEPARATOR)[0];
+
+            if (!menuNames.contains(menuName)) {
+                throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
+            }
+        }
+    }
+
+    private void checkDuplicateMenu(String[] orderMenuItems) {
+        int orderItemsCount = orderMenuItems.length;
+        int noDuplicateMenuItemCount = Arrays.stream(orderMenuItems).map(menuAndQuantity -> menuAndQuantity.split(MENU_QUANTITY_SEPARATOR))
                 .map(menuAndQuantity -> menuAndQuantity[0])
                 .collect(Collectors.toSet()).size();
         if (orderItemsCount != noDuplicateMenuItemCount) {

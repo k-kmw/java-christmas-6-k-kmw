@@ -2,8 +2,11 @@ package christmas;
 
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import christmas.domain.order.Order;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class ApplicationTest extends NsTest {
@@ -45,6 +48,54 @@ class ApplicationTest extends NsTest {
     void 주문_예외_테스트() {
         assertSimpleTest(() -> {
             runException("3", "제로콜라-a");
+            assertThat(output()).contains("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        });
+    }
+
+    @DisplayName("음료만 주문하면 예외가 발생한다.")
+    @Test
+    public void OnlyDrinkOrderExceptionTest() {
+        // given
+        String menu = "제로콜라-1,레드와인-1,샴페인-1";
+
+        // then
+        assertSimpleTest(() -> {
+            runException("3", menu);
+            assertThat(output()).contains("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        });
+
+        // given
+        String menu2 = "제로콜라-1";
+
+        // then
+        assertSimpleTest(() -> {
+            runException("3", menu2);
+            assertThat(output()).contains("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        });
+    }
+
+    @DisplayName("20개 이상의 메뉴를 한 번에 주문할 경우 예외가 발생한다.")
+    @Test
+    public void OrderOver20ExceptionTest() {
+        // given
+        String menu = "시저샐러드-10,제로콜라-8,티본스테이크-3";
+
+        // then
+        assertSimpleTest(() -> {
+            runException("3", menu);
+            assertThat(output()).contains("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        });
+    }
+
+    @DisplayName("메뉴판에 없는 메뉴를 입력하는 경우 예외가 발생해야 한다.")
+    @Test
+    public void NoMenuExceptionTest() {
+        // given
+        String menu = "스파게티-1,바비큐립-1,초코케이크-2,제로콜라-1";
+
+        // then
+        assertSimpleTest(() -> {
+            runException("3", menu);
             assertThat(output()).contains("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
         });
     }
