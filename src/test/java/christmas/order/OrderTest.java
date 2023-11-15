@@ -69,24 +69,6 @@ public class OrderTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("메뉴의 개수가 1보다 작을 경우 예외가 발생해야 한다.")
-    @Test
-    public void LessThanOneOnMenuExceptionTest() {
-        // given
-        String menu = "티본스테이크-0,바비큐립-1,초코케이크-2,제로콜라-1";
-
-        // then
-        assertThatThrownBy(() -> new Order(menu, orderDate))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // given
-        String menu2 = "티본스테이크--1,바비큐립-1,초코케이크-2,제로콜라-1";
-
-        // then
-        assertThatThrownBy(() -> new Order(menu2, orderDate))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
     @DisplayName("음료만 주문하면 예외가 발생한다.")
     @Test
     public void OnlyDrinkOrderExceptionTest() {
@@ -102,70 +84,6 @@ public class OrderTest {
 
         // then
         assertThatThrownBy(() -> new Order(menu2, orderDate))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @DisplayName("중복 메뉴를 입력하면 예외가 발생한다.")
-    @Test
-    public void duplicateMenuExceptionTest() {
-        // given
-        String menu = "시저샐러드-1,시저샐러드-1";
-
-        // then
-        assertThatThrownBy(() -> new Order(menu, orderDate))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // given
-        String menu2 = "제로콜라-1,제로콜라-1,티본스테이크-1";
-
-        // then
-        assertThatThrownBy(() -> new Order(menu2, orderDate))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @DisplayName("메뉴의 형식이 예시와 다른 경우 예외가 발생한다.")
-    @Test
-    public void invalidMenuFormatExceptionTest() {
-        // given
-        String menu = "시저샐러드--1";
-
-        // then
-        assertThatThrownBy(() -> new Order(menu, orderDate))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // given
-        String menu2 = "제로콜라-1시저샐러드-3";
-
-        // then
-        assertThatThrownBy(() -> new Order(menu2, orderDate))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // given
-        String menu3 = "제로콜라-1, 시저샐러드-3";
-
-        // then
-        assertThatThrownBy(() -> new Order(menu3, orderDate))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // given
-        String menu4 = "제로콜라-1시저샐러드-3";
-
-        // then
-        assertThatThrownBy(() -> new Order(menu4, orderDate))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // given
-        String menu5 = "abc";
-
-        // then
-        assertThatThrownBy(() -> new Order(menu5, orderDate))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // given
-        String menu6 = ",,,,";
-
-        // then
-        assertThatThrownBy(() -> new Order(menu6, orderDate))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

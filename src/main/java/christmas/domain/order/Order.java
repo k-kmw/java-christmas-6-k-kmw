@@ -3,6 +3,7 @@ package christmas.domain.order;
 import _core.exception.MyException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Order {
@@ -35,38 +36,11 @@ public class Order {
 
     private void makeOrderMenuItems(String menus) {
         String[] orderItems = menus.split(",");
-        for (String orderItem : orderItems) {
-            String[] menuAndCount = orderItem.split("-");
-            if (menuAndCount.length != 2) {
-                throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
-            }
-            try {
-                addOrderMenuItem(menuAndCount);
-            } catch (NumberFormatException e) {
-                throw new NumberFormatException(MyException.INVALID_ORDER.getMessage());
-            }
-        }
+        Arrays.stream(orderItems)
+                .map(orderItem -> orderItem.split("-"))
+                .map(menuAndQuantity -> OrderMenuItem.create(menuAndQuantity[0].strip(), Integer.parseInt(menuAndQuantity[1].strip())))
+                .forEach(orderMenuItems::add);
         validateOrderMenuItems(orderMenuItems);
-    }
-
-    private void addOrderMenuItem(String[] menuAndCount) {
-        String menuName = menuAndCount[0];
-        int quantity = Integer.parseInt(menuAndCount[1]);
-
-        validateQuantity(quantity);
-        checkDuplicateMenu(orderMenuItems, menuName);
-
-        OrderMenuItem orderMenuItem = OrderMenuItem.create(menuName, quantity);
-        orderMenuItems.add(orderMenuItem);
-    }
-
-    private void validateQuantity(int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
-    }
-
-    private void checkDuplicateMenu(List<OrderMenuItem> orderMenuItems, String menuName) {
-        if (orderMenuItems.stream().anyMatch(orderMenuItem -> orderMenuItem.getMenuItem().getName().equals(menuName)))
-            throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
     }
 
     private void validateOrderMenuItems(List<OrderMenuItem> orderMenuItems) {

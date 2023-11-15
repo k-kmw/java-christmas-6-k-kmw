@@ -8,7 +8,8 @@ import christmas.view.OutputView;
 
 public class Application {
     public static void main(String[] args) {
-        EventPlannerController eventPlannerController = new EventPlannerController(new InputView(), new OrderService(), new EventService(), new OutputView());
+        EventPlannerController eventPlannerController =
+                new EventPlannerController(new InputView(), new OrderService(), new EventService(), new OutputView());
         eventPlannerController.start();
     }
 }
