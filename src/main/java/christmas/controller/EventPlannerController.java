@@ -3,17 +3,18 @@ package christmas.controller;
 import _core.exception.MyException;
 import christmas.domain.event.Calendar;
 import christmas.domain.event.Event;
-import christmas.domain.order.*;
+import christmas.domain.order.Category;
+import christmas.domain.order.Menu;
+import christmas.domain.order.MenuItem;
+import christmas.domain.order.Order;
 import christmas.service.EventService;
 import christmas.service.OrderService;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static christmas.domain.Constant.*;
 
@@ -85,7 +86,7 @@ public class EventPlannerController {
     private void validateMenu(String menu) {
         String[] orderMenuItems = menu.split(MENU_SEPARATOR);
 
-        if(orderMenuItems.length == 0) {
+        if (orderMenuItems.length == 0) {
             throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
         }
 
@@ -93,6 +94,16 @@ public class EventPlannerController {
 
         for (String orderItem : orderMenuItems) {
             validateOrderItem(orderItem);
+        }
+    }
+
+    private void checkDuplicateMenu(String[] orderItems) {
+        int orderItemsCount = orderItems.length;
+        int noDuplicateMenuItemCount = Arrays.stream(orderItems).map(menuAndQuantity -> menuAndQuantity.split(MENU_QUANTITY_SEPARATOR))
+                .map(menuAndQuantity -> menuAndQuantity[0])
+                .collect(Collectors.toSet()).size();
+        if (orderItemsCount != noDuplicateMenuItemCount) {
+            throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
         }
     }
 
@@ -109,6 +120,10 @@ public class EventPlannerController {
         } catch (NumberFormatException e) {
             throw new NumberFormatException(MyException.INVALID_ORDER.getMessage());
         }
+    }
+
+    private void validateQuantity(int quantity) {
+        if (quantity <= 0) throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
     }
 
     private void checkOnlyDrinkOrder(String menu) {
@@ -136,19 +151,5 @@ public class EventPlannerController {
         if (orderMenuCounts > 20) {
             throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
         }
-    }
-
-    private void checkDuplicateMenu(String[] orderItems) {
-        int orderItemsCount = orderItems.length;
-        int noDuplicateMenuItemCount = Arrays.stream(orderItems).map(menuAndQuantity -> menuAndQuantity.split(MENU_QUANTITY_SEPARATOR))
-                .map(menuAndQuantity -> menuAndQuantity[0])
-                .collect(Collectors.toSet()).size();
-        if (orderItemsCount != noDuplicateMenuItemCount) {
-            throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
-        }
-    }
-
-    private void validateQuantity(int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
     }
 }
