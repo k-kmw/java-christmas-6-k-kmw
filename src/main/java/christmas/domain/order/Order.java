@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static christmas.domain.Constant.*;
+
 public class Order {
 
     private final List<OrderMenuItem> orderMenuItems;
@@ -31,13 +33,13 @@ public class Order {
     }
 
     public int calculateGiftEventNum() {
-        return calculateTotalPriceBeforeDiscount() / 120000;
+        return calculateTotalPriceBeforeDiscount() / GIFT_EVENT_PURCHASE_PRICE;
     }
 
     private void makeOrderMenuItems(String menus) {
-        String[] orderItems = menus.split(",");
+        String[] orderItems = menus.split(MENU_SEPARATOR);
         Arrays.stream(orderItems)
-                .map(orderItem -> orderItem.split("-"))
+                .map(orderItem -> orderItem.split(MENU_QUANTITY_SEPARATOR))
                 .map(menuAndQuantity -> OrderMenuItem.create(menuAndQuantity[0].strip(), Integer.parseInt(menuAndQuantity[1].strip())))
                 .forEach(orderMenuItems::add);
         validateOrderMenuItems(orderMenuItems);

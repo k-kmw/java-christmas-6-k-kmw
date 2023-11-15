@@ -4,14 +4,14 @@ import _core.exception.MyException;
 import christmas.domain.event.Calendar;
 import christmas.domain.event.Event;
 import christmas.domain.order.Order;
-import christmas.domain.order.OrderMenuItem;
 import christmas.service.EventService;
 import christmas.service.OrderService;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 
 import java.util.Arrays;
-import java.util.List;
+
+import static christmas.domain.Constant.*;
 
 public class EventPlannerController {
     private final InputView inputView;
@@ -47,7 +47,7 @@ public class EventPlannerController {
                 String inputDate = inputView.readDate();
                 validateDate(inputDate);
                 return Integer.parseInt(inputDate);
-            } catch (NumberFormatException e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -56,7 +56,7 @@ public class EventPlannerController {
     private void validateDate(String inputDate) {
         try {
             int date = Integer.parseInt(inputDate);
-            if (date < 1 || date > 31) {
+            if (date < MONTH_FIRST_DAY || date > MONTH_LAST_DAY) {
                 throw new IllegalArgumentException(MyException.INVALID_DATE.getMessage());
             }
         } catch (NumberFormatException e) {
@@ -70,22 +70,22 @@ public class EventPlannerController {
                 String menu = inputView.readMenus();
                 validateMenu(menu);
                 return menu;
-            } catch (NumberFormatException e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
     private void validateMenu(String menu) {
-        String[] orderItems = menu.split(",");
+        String[] orderItems = menu.split(MENU_SEPARATOR);
         for (String orderItem : orderItems) {
-            String[] menuAndCount = orderItem.split("-");
-            if (menuAndCount.length != 2) {
+            String[] menuAndQuantity = orderItem.split(MENU_QUANTITY_SEPARATOR);
+            if (menuAndQuantity.length != 2) {
                 throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
             }
             try {
-                String menuName = menuAndCount[0];
-                int quantity = Integer.parseInt(menuAndCount[1]);
+                String menuName = menuAndQuantity[0];
+                int quantity = Integer.parseInt(menuAndQuantity[1]);
                 checkDuplicateMenu(orderItems, menuName);
                 validateQuantity(quantity);
             } catch (NumberFormatException e) {

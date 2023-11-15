@@ -7,6 +7,8 @@ import christmas.domain.order.OrderMenuItem;
 
 import java.text.DecimalFormat;
 
+import static christmas.domain.Constant.GIFT_EVENT_PRICE;
+
 public class OutputView {
 
     private DecimalFormat df = new DecimalFormat("###,###");
@@ -39,7 +41,7 @@ public class OutputView {
 
     private void printEventList(Event event, DiscountType discountType) {
         System.out.println("\n<증정 메뉴>");
-        int giftMenuNum = event.getGiftEventBenefit() / 25000;
+        int giftMenuNum = event.getGiftEventBenefit() / GIFT_EVENT_PRICE;
         if (giftMenuNum == 0) {
             System.out.println("없음");
         } else {
