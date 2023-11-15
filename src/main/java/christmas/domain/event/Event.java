@@ -2,6 +2,8 @@ package christmas.domain.event;
 
 import christmas.domain.order.Order;
 
+import static christmas.domain.Constant.TO_GET_EVENT_MINIMUM_ORDER_PRICE;
+
 public class Event {
 
     private final int christmasDiscount;
@@ -40,12 +42,16 @@ public class Event {
 
     // 정적 생성 메서드
     public static Event create(Order order, DiscountPolicy discountPolicy) {
+        int totalPriceBeforeDiscount = order.calculateTotalPriceBeforeDiscount();
+        if (totalPriceBeforeDiscount < TO_GET_EVENT_MINIMUM_ORDER_PRICE) {
+            return new Event(0, 0,0, 0, 0);
+        }
+
         int christmasDiscount = discountPolicy.calculateChristmasDiscount(order.getOrderDate());
         int weekDayDiscount = discountPolicy.calculateWeekDayDiscount(Calendar.getDiscountType(order.getOrderDate()), order.getOrderMenuItems());
         int weekendDiscount = discountPolicy.calculateWeekendDiscount(Calendar.getDiscountType(order.getOrderDate()), order.getOrderMenuItems());
         int starDiscount = discountPolicy.calculateStarDiscount(Calendar.isStarDay(order.getOrderDate()));
         int giftEventBenefit = discountPolicy.calculateGiftEventBenefit(order.calculateGiftEventNum());
-
         return new Event(christmasDiscount, weekDayDiscount, weekendDiscount, starDiscount, giftEventBenefit);
     }
 

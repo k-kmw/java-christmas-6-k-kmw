@@ -10,6 +10,7 @@ public final class Constant {
     public static int MONTH_LAST_DAY = 31;
 
     // event
+    public static int TO_GET_EVENT_MINIMUM_ORDER_PRICE = 10000;
     public static int GIFT_EVENT_PURCHASE_PRICE = 120000;
     public static int GIFT_EVENT_PRICE = 25000;
     public static int CHRISTMAS_DISCOUNT_BASE_PRICE = 1000;

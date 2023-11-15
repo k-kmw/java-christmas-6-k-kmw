@@ -3,13 +3,17 @@ package christmas.controller;
 import _core.exception.MyException;
 import christmas.domain.event.Calendar;
 import christmas.domain.event.Event;
-import christmas.domain.order.Order;
+import christmas.domain.order.*;
 import christmas.service.EventService;
 import christmas.service.OrderService;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static christmas.domain.Constant.*;
 
@@ -69,6 +73,8 @@ public class EventPlannerController {
             try {
                 String menu = inputView.readMenus();
                 validateMenu(menu);
+                checkOnlyDrinkOrder(menu);
+                checkOver20Num(menu);
                 return menu;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
@@ -77,25 +83,67 @@ public class EventPlannerController {
     }
 
     private void validateMenu(String menu) {
-        String[] orderItems = menu.split(MENU_SEPARATOR);
-        for (String orderItem : orderItems) {
-            String[] menuAndQuantity = orderItem.split(MENU_QUANTITY_SEPARATOR);
-            if (menuAndQuantity.length != 2) {
-                throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
-            }
-            try {
-                String menuName = menuAndQuantity[0];
-                int quantity = Integer.parseInt(menuAndQuantity[1]);
-                checkDuplicateMenu(orderItems, menuName);
-                validateQuantity(quantity);
-            } catch (NumberFormatException e) {
-                throw new NumberFormatException(MyException.INVALID_ORDER.getMessage());
-            }
+        String[] orderMenuItems = menu.split(MENU_SEPARATOR);
+
+        if(orderMenuItems.length == 0) {
+            throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
+        }
+
+        checkDuplicateMenu(orderMenuItems);
+
+        for (String orderItem : orderMenuItems) {
+            validateOrderItem(orderItem);
         }
     }
 
-    private void checkDuplicateMenu(String[] orderItems, String menuName) {
-        if (Arrays.asList(orderItems).contains(menuName)) {
+    private void validateOrderItem(String orderItem) {
+        String[] menuAndQuantity = orderItem.split(MENU_QUANTITY_SEPARATOR);
+
+        if (menuAndQuantity.length != 2) {
+            throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
+        }
+
+        try {
+            int quantity = Integer.parseInt(menuAndQuantity[1]);
+            validateQuantity(quantity);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException(MyException.INVALID_ORDER.getMessage());
+        }
+    }
+
+    private void checkOnlyDrinkOrder(String menu) {
+        String[] orderMenuItems = menu.split(MENU_SEPARATOR);
+        Set<String> drinkMenu = Menu.MENU_ITEMS.values().stream()
+                .filter(menuItem -> menuItem.getCategory().equals(Category.DRINK))
+                .map(MenuItem::getName)
+                .collect(Collectors.toSet());
+
+        boolean isAllDrink = Arrays.stream(orderMenuItems).map(menuAndQuantity -> menuAndQuantity.split(MENU_QUANTITY_SEPARATOR))
+                .map(menuAndQuantity -> menuAndQuantity[0])
+                .allMatch(drinkMenu::contains);
+
+        if (isAllDrink) {
+            throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
+        }
+    }
+
+    private void checkOver20Num(String menu) {
+        String[] orderMenuItems = menu.split(MENU_SEPARATOR);
+        int orderMenuCounts = Arrays.stream(orderMenuItems).map(menuAndQuantity -> menuAndQuantity.split(MENU_QUANTITY_SEPARATOR))
+                .mapToInt(menuAndQuantity -> Integer.parseInt(menuAndQuantity[1]))
+                .sum();
+
+        if (orderMenuCounts > 20) {
+            throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
+        }
+    }
+
+    private void checkDuplicateMenu(String[] orderItems) {
+        int orderItemsCount = orderItems.length;
+        int noDuplicateMenuItemCount = Arrays.stream(orderItems).map(menuAndQuantity -> menuAndQuantity.split(MENU_QUANTITY_SEPARATOR))
+                .map(menuAndQuantity -> menuAndQuantity[0])
+                .collect(Collectors.toSet()).size();
+        if (orderItemsCount != noDuplicateMenuItemCount) {
             throw new IllegalArgumentException(MyException.INVALID_ORDER.getMessage());
         }
     }
